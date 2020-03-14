@@ -11,11 +11,11 @@ else:
     os.mkdir('D:\\Temp')
 temp_open = 'D:\\Temp\\temp_old.png'
 temp_save = 'D:\\Temp\\temp_new.png'
-shutil.copyfile(f_open_way, temp_open)
 
 if(f_open_way == None):
     exit(0)
 else:
+    shutil.copyfile(f_open_way, temp_open)
     value = int(g.integerbox(title = '美颜程度', msg = '请输入从0到100的数字，数值越大，美颜程度越高', lowerbound =0, upperbound = 100))
     image = cv2.imread(temp_open)
     image_dst = cv2.bilateralFilter(image, value, value*2, value/2)
