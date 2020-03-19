@@ -1,10 +1,10 @@
-
 import time as t
 
 class MyTimer():
 
     def __init__(self):
         self.unit = [' year(s)', ' month' , ' day', ' hour', ' minute', ' second.']
+        self.borrow = [0, 12, 31, 24, 60, 60]
         self.prompt = 'Timing not started'
         self.lasted = []
         self.start_num = 0
@@ -44,7 +44,22 @@ class MyTimer():
         self.lasted = []
         self.prompt = 'Total running time is: '
         for index in range(6):
-            self.lasted.append(self.stop_num[index] - self.start_num[index])
+            temp = self.stop_num[index] - self.start_num[index]
+            #If the low is not enough, borrow from the high
+            if temp < 0:
+                #Test the high position can be borrowed, if not, borrow from the higher position.
+                i = 1
+                while self.lasted[index - i] < 1:
+                    self.lasted[index - i]  += self.borrow[index - i] - 1
+                    self.lasted[index - i - 1] -= 1
+                    i += 1
+
+                self.lasted.append(self.borrow[index] + temp)
+                self.lasted[index - 1] -= 1
+            else:
+                self.lasted.append(temp)
+        #Since the high position will be borrowed at any time, the print should be replaced at the end.
+        for index in range(6):
             if self.lasted[index]:
                 self.prompt += (str(self.lasted[index]) + self.unit[index])
         #Initialize variables for the next round.
